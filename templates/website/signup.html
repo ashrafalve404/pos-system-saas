@@ -1,0 +1,224 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Sign Up - SaaS POS{% endblock %}
+
+{% block extra_css %}
+<style>
+.signup-container {
+    max-width: 600px;
+    margin: 100px auto 50px;
+}
+.step-indicator {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+.step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+}
+.step::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: #e2e8f0;
+    z-index: -1;
+}
+.step:last-child::after {
+    display: none;
+}
+.step.active .step-number {
+    background: var(--primary-color);
+    color: white;
+}
+.step.completed .step-number {
+    background: #10b981;
+    color: white;
+}
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+.step-title {
+    font-size: 14px;
+    color: #64748b;
+}
+.form-step {
+    display: none;
+}
+.form-step.active {
+    display: block;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="signup-container">
+    <div class="text-center mb-4">
+        <h1 class="fw-bold">Create Your Account</h1>
+        <p class="text-muted">Start your 14-day free trial</p>
+    </div>
+    
+    <div class="step-indicator">
+        <div class="step active" id="step1-indicator">
+            <div class="step-number">1</div>
+            <div class="step-title">Account</div>
+        </div>
+        <div class="step" id="step2-indicator">
+            <div class="step-number">2</div>
+            <div class="step-title">Business</div>
+        </div>
+        <div class="step" id="step3-indicator">
+            <div class="step-number">3</div>
+            <div class="step-title">Plan</div>
+        </div>
+    </div>
+    
+    <div class="card border-0 shadow-lg">
+        <div class="card-body p-4">
+            <form method="post" id="signupForm">
+                {% csrf_token %}
+                
+                <!-- Step 1: Account -->
+                <div class="form-step active" id="step1">
+                    <h5 class="mb-4">Step 1: Create Your Account</h5>
+                    <div class="mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" name="full_name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" required minlength="8">
+                        <small class="text-muted">Minimum 8 characters</small>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-primary" onclick="nextStep(2)">Next Step</button>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Business -->
+                <div class="form-step" id="step2">
+                    <h5 class="mb-4">Step 2: Business Information</h5>
+                    <div class="mb-3">
+                        <label class="form-label">Business Name</label>
+                        <input type="text" name="business_name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone Number</label>
+                        <input type="text" name="phone" class="form-control">
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary" onclick="prevStep(1)">Back</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep(3)">Next Step</button>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Plan -->
+                <div class="form-step" id="step3">
+                    <h5 class="mb-4">Step 3: Choose Your Plan</h5>
+                    <div class="mb-3">
+                        <div class="form-check custom-radio mb-3">
+                            <input class="form-check-input" type="radio" name="plan" id="planFree" value="free" checked>
+                            <label class="form-check-label w-100 p-3 border rounded" for="planFree">
+                                <strong>Free</strong> - $0/month
+                                <small class="d-block text-muted">1 Store, 5 Products</small>
+                            </label>
+                        </div>
+                        <div class="form-check custom-radio mb-3">
+                            <input class="form-check-input" type="radio" name="plan" id="planStarter" value="starter">
+                            <label class="form-check-label w-100 p-3 border rounded" for="planStarter">
+                                <strong>Starter</strong> - $29/month
+                                <small class="d-block text-muted">3 Stores, Unlimited Products</small>
+                            </label>
+                        </div>
+                        <div class="form-check custom-radio mb-3">
+                            <input class="form-check-input" type="radio" name="plan" id="planPro" value="professional">
+                            <label class="form-check-label w-100 p-3 border rounded" for="planPro">
+                                <strong>Professional</strong> - $79/month
+                                <small class="d-block text-muted">10 Stores, Unlimited Products, API Access</small>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary" onclick="prevStep(2)">Back</button>
+                        <button type="submit" class="btn btn-primary">Create Account</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <p class="text-center mt-4 text-muted">
+        Already have an account? <a href="{% url 'website:login' %}">Login here</a>
+    </p>
+</div>
+
+<script>
+function showStep(step) {
+    document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
+    document.getElementById('step' + step).classList.add('active');
+    
+    document.querySelectorAll('.step').forEach((el, index) => {
+        el.classList.remove('active', 'completed');
+        if (index + 1 < step) {
+            el.classList.add('completed');
+            el.querySelector('.step-number').innerHTML = '✓';
+        } else if (index + 1 === step) {
+            el.classList.add('active');
+            el.querySelector('.step-number').innerHTML = index + 1;
+        } else {
+            el.querySelector('.step-number').innerHTML = index + 1;
+        }
+    });
+}
+
+function nextStep(step) {
+    // Validate current step
+    const currentStep = step - 1;
+    const inputs = document.querySelectorAll('#step' + currentStep + ' input[required]');
+    let valid = true;
+    
+    inputs.forEach(input => {
+        if (!input.value) {
+            input.classList.add('is-invalid');
+            valid = false;
+        } else {
+            input.classList.remove('is-invalid');
+        }
+    });
+    
+    if (valid) {
+        showStep(step);
+    }
+}
+
+function prevStep(step) {
+    showStep(step);
+}
+
+// Check for URL plan parameter
+const urlParams = new URLSearchParams(window.location.search);
+const plan = urlParams.get('plan');
+if (plan) {
+    const radio = document.querySelector('input[name="plan"][value="' + plan + '"]');
+    if (radio) {
+        radio.checked = true;
+    }
+}
+</script>
+{% endblock %}

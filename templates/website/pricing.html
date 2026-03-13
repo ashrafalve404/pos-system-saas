@@ -1,0 +1,149 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Pricing - SaaS POS{% endblock %}
+
+{% block content %}
+<div style="margin-top: 80px;"></div>
+
+<section class="py-5">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h1 class="fw-bold">Simple, Transparent Pricing</h1>
+            <p class="text-muted">Choose the plan that's right for your business</p>
+        </div>
+        
+        <div class="row justify-content-center g-4">
+            <!-- Free Plan -->
+            <div class="col-md-4">
+                <div class="card pricing-card h-100">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold">Free</h5>
+                        <div class="mb-3">
+                            <span class="display-4 fw-bold">$0</span>
+                            <span class="text-muted">/month</span>
+                        </div>
+                        <p class="text-muted mb-4">Perfect for small businesses just getting started</p>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>1 Store</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Up to 5 Products</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Basic Reporting</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Email Support</li>
+                        </ul>
+                        <a href="{% url 'website:signup' %}?plan=free" class="btn btn-outline-primary w-100">Get Started</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Starter Plan -->
+            <div class="col-md-4">
+                <div class="card pricing-card popular h-100">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold">Starter</h5>
+                        <div class="mb-3">
+                            <span class="display-4 fw-bold">$29</span>
+                            <span class="text-muted">/month</span>
+                        </div>
+                        <p class="text-muted mb-4">Great for growing businesses</p>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>3 Stores</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Unlimited Products</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Advanced Reporting</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Customer Loyalty</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Priority Support</li>
+                        </ul>
+                        <a href="{% url 'website:signup' %}?plan=starter" class="btn btn-primary w-100">Start Free Trial</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pro Plan -->
+            <div class="col-md-4">
+                <div class="card pricing-card h-100">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold">Professional</h5>
+                        <div class="mb-3">
+                            <span class="display-4 fw-bold">$79</span>
+                            <span class="text-muted">/month</span>
+                        </div>
+                        <p class="text-muted mb-4">For established businesses</p>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>10 Stores</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Unlimited Products</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Advanced Analytics</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>API Access</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Dedicated Support</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Custom Integrations</li>
+                        </ul>
+                        <a href="{% url 'website:signup' %}?plan=professional" class="btn btn-outline-primary w-100">Start Free Trial</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5">
+            <p class="text-muted">Need a custom plan? <a href="{% url 'website:contact' %}">Contact us</a> for enterprise pricing</p>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-5" style="background: #f8fafc;">
+    <div class="container py-5">
+        <h2 class="text-center fw-bold mb-5">Frequently Asked Questions</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item border-0 mb-3 rounded">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                Can I change my plan later?
+                            </button>
+                        </h3>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item border-0 mb-3 rounded">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                Is there a free trial?
+                            </button>
+                        </h3>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes, we offer a 14-day free trial on all paid plans. No credit card required to start.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item border-0 mb-3 rounded">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                What payment methods do you accept?
+                            </button>
+                        </h3>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                We accept all major credit cards, debit cards, and PayPal.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item border-0 mb-3 rounded">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                Can I cancel anytime?
+                            </button>
+                        </h3>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes, you can cancel your subscription at any time. No questions asked.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

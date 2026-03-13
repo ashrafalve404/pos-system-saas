@@ -1,0 +1,90 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Settings - SaaS POS{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-gear"></i> Settings</h2>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Organization</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Name:</strong> {{ organization.name }}</p>
+                <p><strong>Plan:</strong> {{ organization.get_subscription_plan_display }}</p>
+                <p><strong>Created:</strong> {{ organization.created_at|date:"M d, Y" }}</p>
+                <a href="{% url 'settings:organization_edit' %}" class="btn btn-primary">Edit Organization</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>Stores</h5>
+                <a href="{% url 'settings:store_create' %}" class="btn btn-sm btn-primary">Add Store</a>
+            </div>
+            <div class="card-body">
+                {% for store in stores %}
+                <div class="border-bottom py-2">
+                    <strong>{{ store.name }}</strong><br>
+                    <small class="text-muted">{{ store.address|default:"No address" }}</small>
+                </div>
+                {% empty %}
+                <p class="text-muted">No stores yet</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5>Subscription Plans</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h6>Free</h6>
+                        <h4>$0</h4>
+                        <small>1 Store, 5 Users</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h6>Starter</h6>
+                        <h4>$29</h4>
+                        <small>3 Stores, 10 Users</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h6>Professional</h6>
+                        <h4>$79</h4>
+                        <small>10 Stores, 25 Users</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h6>Enterprise</h6>
+                        <h4>$199</h4>
+                        <small>Unlimited</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

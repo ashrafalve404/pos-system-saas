@@ -1,0 +1,72 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Contact - SaaS POS{% endblock %}
+
+{% block content %}
+<div style="margin-top: 80px;"></div>
+
+<section class="py-5">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h1 class="fw-bold">Get In Touch</h1>
+            <p class="text-muted">We'd love to hear from you</p>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-4">
+                        <form>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Subject</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Message</label>
+                                    <textarea class="form-control" rows="5" required></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Send Message</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="row mt-5 g-4 text-center">
+                    <div class="col-md-4">
+                        <div class="feature-icon d-inline-flex">
+                            <i class="bi bi-envelope"></i>
+                        </div>
+                        <h6 class="mt-3">Email</h6>
+                        <p class="text-muted small">support@saaspos.com</p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-icon d-inline-flex">
+                            <i class="bi bi-telephone"></i>
+                        </div>
+                        <h6 class="mt-3">Phone</h6>
+                        <p class="text-muted small">1-800-SAS-POS</p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-icon d-inline-flex">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+                        <h6 class="mt-3">Address</h6>
+                        <p class="text-muted small">San Francisco, CA</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

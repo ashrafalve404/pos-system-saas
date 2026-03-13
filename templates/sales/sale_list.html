@@ -1,0 +1,90 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Sales - SaaS POS{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-receipt"></i> Sales</h2>
+    <a href="{% url 'dashboard:pos' %}" class="btn btn-primary">
+        <i class="bi bi-plus"></i> New Sale
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="get" class="row g-3 mb-4">
+            <div class="col-md-3">
+                <input type="text" name="search" class="form-control" placeholder="Search invoice..." value="{{ request.GET.search|default:'' }}">
+            </div>
+            <div class="col-md-2">
+                <select name="status" class="form-select">
+                    <option value="">All Status</option>
+                    <option value="paid" {% if request.GET.status == 'paid' %}selected{% endif %}>Paid</option>
+                    <option value="pending" {% if request.GET.status == 'pending' %}selected{% endif %}>Pending</option>
+                    <option value="refunded" {% if request.GET.status == 'refunded' %}selected{% endif %}>Refunded</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <input type="date" name="date_from" class="form-control" value="{{ request.GET.date_from|default:'' }}">
+            </div>
+            <div class="col-md-2">
+                <input type="date" name="date_to" class="form-control" value="{{ request.GET.date_to|default:'' }}">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-secondary w-100">Filter</button>
+            </div>
+        </form>
+
+        <div class="mb-3">
+            <strong>Total Revenue: ${{ total_revenue|floatformat:2 }}</strong>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Invoice</th>
+                        <th>Customer</th>
+                        <th>Store</th>
+                        <th>Cashier</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sale in sales %}
+                    <tr>
+                        <td>{{ sale.invoice_number }}</td>
+                        <td>{{ sale.customer.name|default:"-" }}</td>
+                        <td>{{ sale.store.name }}</td>
+                        <td>{{ sale.cashier.full_name }}</td>
+                        <td>${{ sale.total }}</td>
+                        <td>
+                            {% if sale.payment_status == 'paid' %}
+                            <span class="badge bg-success">Paid</span>
+                            {% elif sale.payment_status == 'pending' %}
+                            <span class="badge bg-warning">Pending</span>
+                            {% elif sale.payment_status == 'refunded' %}
+                            <span class="badge bg-danger">Refunded</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ sale.created_at|date:"M d, Y H:i" }}</td>
+                        <td>
+                            <a href="{% url 'sales:sale_detail' sale.pk %}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center text-muted py-4">No sales found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

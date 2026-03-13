@@ -1,0 +1,129 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Dashboard - SaaS POS{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Dashboard</h2>
+    <div>
+        <span class="text-muted">Welcome, {{ user.full_name }}</span>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h6 class="card-title">Today's Revenue</h6>
+                <h3>${{ today_revenue|floatformat:2 }}</h3>
+                <small>{{ today_orders }} orders</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h6 class="card-title">Monthly Revenue</h6>
+                <h3>${{ monthly_revenue|floatformat:2 }}</h3>
+                <small>This month</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <h6 class="card-title">Total Customers</h6>
+                <h3>{{ total_customers }}</h3>
+                <small>Registered</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <h6 class="card-title">Low Stock Items</h6>
+                <h3>{{ low_stock_products.count }}</h3>
+                <small>Need attention</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5>Recent Sales</h5>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Invoice</th>
+                            <th>Customer</th>
+                            <th>Store</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sale in recent_sales %}
+                        <tr>
+                            <td>{{ sale.invoice_number }}</td>
+                            <td>{{ sale.customer.name|default:"-" }}</td>
+                            <td>{{ sale.store.name }}</td>
+                            <td>${{ sale.total|floatformat:2 }}</td>
+                            <td>
+                                <span class="badge bg-{{ sale.payment_status|default:'secondary' }}">
+                                    {{ sale.payment_status }}
+                                </span>
+                            </td>
+                            <td>{{ sale.created_at|date:"M d, H:i" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">No recent sales</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Low Stock Alerts</h5>
+            </div>
+            <div class="card-body">
+                {% for product in low_stock_products %}
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span>{{ product.name }}</span>
+                    <span class="badge bg-danger">{{ product.stock_quantity }}</span>
+                </div>
+                {% empty %}
+                <p class="text-muted">No low stock items</p>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h5>Top Selling Products</h5>
+            </div>
+            <div class="card-body">
+                {% for item in top_products %}
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span>{{ item.product__name }}</span>
+                    <span class="badge bg-primary">{{ item.total_sold }}</span>
+                </div>
+                {% empty %}
+                <p class="text-muted">No data yet</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

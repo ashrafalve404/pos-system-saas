@@ -1,0 +1,374 @@
+{% extends 'website/base.html' %}
+
+{% block title %}SaaS POS - Modern Point of Sale System{% endblock %}
+
+{% block extra_css %}
+<style>
+.hero-section {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    min-height: 85vh;
+    padding-top: 80px;
+}
+.stats-counter {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+.stats-counter h3 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+.stats-counter p {
+    color: #64748b;
+    margin-bottom: 0;
+}
+.device-mockup {
+    position: relative;
+    background: #1e293b;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+.device-mockup-tablet {
+    max-width: 400px;
+    margin: 0 auto;
+}
+.device-mockup-phone {
+    max-width: 280px;
+    margin: 0 auto;
+    border-radius: 30px;
+    padding: 15px;
+}
+.notch {
+    background: #0f172a;
+    padding: 8px 20px;
+    border-radius: 0 0 15px 15px;
+    display: inline-block;
+    margin-bottom: -5px;
+    position: relative;
+    z-index: 10;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center py-5">
+            <div class="col-lg-6">
+                <span class="badge mb-4 px-3 py-2" style="background: #e0e7ff; color: #4f46e5; font-size: 12px;">
+                    Trusted by 10,000+ businesses
+                </span>
+                <h1 class="display-3 fw-bold mb-4" style="color: #1e293b;">
+                    Point of Sale <br>Made Simple
+                </h1>
+                <p class="lead mb-4" style="font-size: 1.1rem; max-width: 500px; color: #64748b;">
+                    Manage your store, inventory, and sales in one place. Fast, reliable, and works on any device.
+                </p>
+                <div class="d-flex gap-3 flex-wrap mb-5">
+                    <a href="{% url 'website:signup' %}" class="btn btn-lg px-4" style="background: #4f46e5; color: white; border: none;">
+                        Start Free Trial
+                    </a>
+                    <a href="{% url 'website:features' %}" class="btn btn-lg px-4" style="background: white; color: #64748b; border: 1px solid #e2e8f0;">
+                        See Features
+                    </a>
+                </div>
+                <div class="d-flex gap-4">
+                    <span class="d-flex align-items-center" style="color: #64748b; font-size: 14px;">
+                        <i class="bi bi-check-circle me-2" style="color: #4f46e5;"></i> Free 14-day trial
+                    </span>
+                    <span class="d-flex align-items-center" style="color: #64748b; font-size: 14px;">
+                        <i class="bi bi-check-circle me-2" style="color: #4f46e5;"></i> No credit card
+                    </span>
+                </div>
+            </div>
+            <div class="col-lg-6 mt-5 mt-lg-0">
+                <div class="text-center">
+                    <div style="background: linear-gradient(135deg, #4f46e5, #7c3aed); border-radius: 20px; padding: 60px 40px;">
+                        <i class="bi bi-shop" style="font-size: 80px; color: white;"></i>
+                        <h4 class="mt-4" style="color: white;">SaaS POS</h4>
+                        <p style="color: rgba(255,255,255,0.8);">Your Complete Store Management Solution</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-5" style="background: white;">
+    <div class="container py-4">
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="stats-counter text-center">
+                    <h3>10K+</h3>
+                    <p>Active Businesses</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-counter text-center">
+                    <h3>50K+</h3>
+                    <p>Daily Transactions</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-counter text-center">
+                    <h3>99.9%</h3>
+                    <p>Uptime</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-counter text-center">
+                    <h3>24/7</h3>
+                    <p>Customer Support</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- App Screenshots Section -->
+<section class="py-5" style="background: #f8fafc;">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold" style="color: #1e293b;">Powerful POS on Any Device</h2>
+            <p style="color: #64748b;">Access your dashboard from desktop, tablet, or mobile</p>
+        </div>
+        
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-4">
+                <div class="device-mockup device-mockup-tablet">
+                    <div class="notch"></div>
+                    <div class="device-screen" style="height: 400px;">
+                        <div class="d-flex h-100" style="background: #f8fafc;">
+                            <div class="p-2 flex-grow-1">
+                                <div class="bg-white rounded p-2 mb-2 shadow-sm">
+                                    <span class="text-dark fw-bold" style="font-size: 11px;"><i class="bi bi-shop"></i> My Store</span>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <div class="bg-white rounded p-2 shadow-sm text-center" style="font-size: 10px;">Coffee</div>
+                                    <div class="bg-white rounded p-2 shadow-sm text-center" style="font-size: 10px;">Tea</div>
+                                    <div class="bg-white rounded p-2 shadow-sm text-center" style="font-size: 10px;">Cake</div>
+                                </div>
+                            </div>
+                            <div class="p-2" style="width: 100px; background: #1e293b; border-radius: 0 8px 8px 0;">
+                                <div class="text-white fw-bold mb-2" style="font-size: 10px;">Cart (2)</div>
+                                <div class="bg-secondary rounded p-1 mb-1" style="font-size: 9px; color: white;">Coffee $4.50</div>
+                                <div class="bg-secondary rounded p-1 mb-2" style="font-size: 9px; color: white;">Cake $6.00</div>
+                                <div class="text-white fw-bold" style="font-size: 10px;">Total: $10.50</div>
+                                <div class="btn btn-success btn-sm mt-2 w-100" style="font-size: 10px;">PAY</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="device-mockup device-mockup-phone">
+                    <div class="notch" style="padding: 6px 15px;"></div>
+                    <div class="device-screen" style="height: 500px; border-radius: 20px;">
+                        <div class="p-2 h-100" style="background: #f8fafc; border-radius: 20px;">
+                            <div class="bg-white rounded p-2 mb-2 shadow-sm d-flex justify-content-between align-items-center">
+                                <span class="text-dark fw-bold" style="font-size: 11px;">Dashboard</span>
+                                <div class="bg-primary rounded-circle" style="width:20px;height:20px;"></div>
+                            </div>
+                            <div class="bg-white rounded p-3 mb-2 shadow-sm">
+                                <div style="color: #64748b; font-size: 11px;">Today's Revenue</div>
+                                <div class="text-dark fw-bold" style="font-size: 22px;">$1,234.56</div>
+                            </div>
+                            <div class="row g-2 mb-2">
+                                <div class="col-6">
+                                    <div class="bg-white rounded p-2 shadow-sm text-center">
+                                        <div style="color: #64748b; font-size: 11px;">Orders</div>
+                                        <div class="text-dark fw-bold">48</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="bg-white rounded p-2 shadow-sm text-center">
+                                        <div style="color: #64748b; font-size: 11px;">Customers</div>
+                                        <div class="text-dark fw-bold">156</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="device-mockup device-mockup-tablet">
+                    <div class="notch"></div>
+                    <div class="device-screen" style="height: 400px;">
+                        <div class="p-2 h-100" style="background: #f8fafc;">
+                            <div class="bg-white rounded p-2 mb-2 shadow-sm d-flex justify-content-between align-items-center">
+                                <span class="text-dark fw-bold" style="font-size: 11px;"><i class="bi bi-box"></i> Inventory</span>
+                                <button class="btn btn-primary btn-sm" style="font-size: 9px; padding: 2px 8px;">+ Add</button>
+                            </div>
+                            <div class="bg-white rounded p-2 mb-2 shadow-sm d-flex justify-content-between" style="font-size: 11px;">
+                                <span class="text-dark">Coffee Beans</span>
+                                <span class="badge bg-success" style="font-size: 8px;">In Stock</span>
+                            </div>
+                            <div class="bg-white rounded p-2 mb-2 shadow-sm d-flex justify-content-between" style="font-size: 11px;">
+                                <span class="text-dark">Green Tea</span>
+                                <span class="badge bg-warning" style="font-size: 8px;">Low</span>
+                            </div>
+                            <div class="bg-white rounded p-2 shadow-sm d-flex justify-content-between" style="font-size: 11px;">
+                                <span class="text-dark">Fresh Milk</span>
+                                <span class="badge bg-success" style="font-size: 8px;">In Stock</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5" style="background: white;">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold" style="color: #1e293b;">Everything You Need</h2>
+            <p style="color: #64748b;">Powerful features to run your business efficiently</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="p-4 h-100" style="background: white; border-radius: 16px; border: 1px solid #e2e8f0;">
+                    <div class="mb-3" style="width: 50px; height: 50px; background: #4f46e5; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-cart text-white fs-5"></i>
+                    </div>
+                    <h5 style="color: #1e293b;">Point of Sale</h5>
+                    <p style="color: #64748b; margin-bottom: 0;">Fast checkout with barcode scanning, multiple payment options, and receipts.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 h-100" style="background: white; border-radius: 16px; border: 1px solid #e2e8f0;">
+                    <div class="mb-3" style="width: 50px; height: 50px; background: #14b8a6; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-box-seam text-white fs-5"></i>
+                    </div>
+                    <h5 style="color: #1e293b;">Inventory</h5>
+                    <p style="color: #64748b; margin-bottom: 0;">Track stock levels, low stock alerts, and manage products.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 h-100" style="background: white; border-radius: 16px; border: 1px solid #e2e8f0;">
+                    <div class="mb-3" style="width: 50px; height: 50px; background: #f59e0b; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-people text-white fs-5"></i>
+                    </div>
+                    <h5 style="color: #1e293b;">Customers</h5>
+                    <p style="color: #64748b; margin-bottom: 0;">Loyalty programs, purchase history, and customer profiles.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 h-100" style="background: white; border-radius: 16px; border: 1px solid #e2e8f0;">
+                    <div class="mb-3" style="width: 50px; height: 50px; background: #ec4899; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-graph-up text-white fs-5"></i>
+                    </div>
+                    <h5 style="color: #1e293b;">Analytics</h5>
+                    <p style="color: #64748b; margin-bottom: 0;">Comprehensive reports and insights for better decisions.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 h-100" style="background: white; border-radius: 16px; border: 1px solid #e2e8f0;">
+                    <div class="mb-3" style="width: 50px; height: 50px; background: #8b5cf6; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-shop text-white fs-5"></i>
+                    </div>
+                    <h5 style="color: #1e293b;">Multi-Store</h5>
+                    <p style="color: #64748b; margin-bottom: 0;">Manage multiple stores from one dashboard.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 h-100" style="background: white; border-radius: 16px; border: 1px solid #e2e8f0;">
+                    <div class="mb-3" style="width: 50px; height: 50px; background: #06b6d4; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-cloud text-white fs-5"></i>
+                    </div>
+                    <h5 style="color: #1e293b;">Cloud-Based</h5>
+                    <p style="color: #64748b; margin-bottom: 0;">Access from anywhere on any device.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5" style="background: #f8fafc;">
+    <div class="container py-5 text-center">
+        <h2 class="fw-bold mb-3" style="color: #1e293b;">Ready to Get Started?</h2>
+        <p class="mb-4" style="color: #64748b;">Join thousands of businesses already using SaaS POS</p>
+        <a href="{% url 'website:signup' %}" class="btn btn-lg px-5" style="background: #4f46e5; color: white; border: none;">Start Your Free Trial</a>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="py-5" style="background: white;">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold" style="color: #1e293b;">Loved by Businesses</h2>
+            <p style="color: #64748b;">See what our customers have to say</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="h-100 p-4" style="background: #f8fafc; border-radius: 16px;">
+                    <div class="mb-3" style="color: #fbbf24;">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                    <p style="color: #64748b;">"SaaS POS transformed our retail store. The inventory tracking is a game-changer!"</p>
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; background: #4f46e5; color: white;">JD</div>
+                        <div>
+                            <strong style="color: #1e293b;">John Doe</strong>
+                            <br><small style="color: #64748b;">Retail Store Owner</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="h-100 p-4" style="background: #f8fafc; border-radius: 16px;">
+                    <div class="mb-3" style="color: #fbbf24;">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                    <p style="color: #64748b;">"Managing three locations has never been easier. Highly recommended!"</p>
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; background: #14b8a6; color: white;">SM</div>
+                        <div>
+                            <strong style="color: #1e293b;">Sarah Miller</strong>
+                            <br><small style="color: #64748b;">Multi-store Manager</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="h-100 p-4" style="background: #f8fafc; border-radius: 16px;">
+                    <div class="mb-3" style="color: #fbbf24;">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                    <p style="color: #64748b;">"The loyalty program increased repeat customers by 40%. Great investment!"</p>
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; background: #f59e0b; color: white;">MK</div>
+                        <div>
+                            <strong style="color: #1e293b;">Mike Kim</strong>
+                            <br><small style="color: #64748b;">Cafe Owner</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

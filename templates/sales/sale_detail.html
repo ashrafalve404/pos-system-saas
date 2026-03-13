@@ -1,0 +1,94 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Sale {{ sale.invoice_number }} - SaaS POS{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>Invoice #{{ sale.invoice_number }}</h4>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <strong>Store:</strong> {{ sale.store.name }}<br>
+                        <strong>Address:</strong> {{ sale.store.address|default:"N/A" }}
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <strong>Date:</strong> {{ sale.created_at|date:"M d, Y H:i" }}<br>
+                        <strong>Cashier:</strong> {{ sale.cashier.full_name }}
+                    </div>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Qty</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in sale.items.all %}
+                        <tr>
+                            <td>{{ item.product.name }}</td>
+                            <td>${{ item.price }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>${{ item.subtotal }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="3" class="text-end">Subtotal:</th>
+                            <th>${{ sale.subtotal }}</th>
+                        </tr>
+                        <tr>
+                            <th colspan="3" class="text-end">Discount:</th>
+                            <th>-${{ sale.discount_amount }}</th>
+                        </tr>
+                        <tr>
+                            <th colspan="3" class="text-end">Total:</th>
+                            <th>${{ sale.total }}</th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                {% if sale.customer %}
+                <div class="mt-4">
+                    <strong>Customer:</strong> {{ sale.customer.name }}<br>
+                    <strong>Email:</strong> {{ sale.customer.email|default:"N/A" }}<br>
+                    <strong>Phone:</strong> {{ sale.customer.phone|default:"N/A" }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Payment Info</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Status:</strong> 
+                    {% if sale.payment_status == 'paid' %}
+                    <span class="badge bg-success">Paid</span>
+                    {% else %}
+                    <span class="badge bg-warning">{{ sale.payment_status }}</span>
+                    {% endif %}
+                </p>
+                <p><strong>Method:</strong> 
+                    {% with sale.payments.first as payment %}
+                        {{ payment.get_payment_method_display|default:"N/A" }}
+                    {% endwith %}
+                </p>
+                <a href="#" class="btn btn-primary w-100" onclick="window.print()">
+                    <i class="bi bi-printer"></i> Print Receipt
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
