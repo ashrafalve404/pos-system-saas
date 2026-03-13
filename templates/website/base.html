@@ -8,187 +8,78 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --primary-light: #818cf8;
-            --secondary: #14b8a6;
-            --dark: #1e1b4b;
-            --light: #f8fafc;
-            --accent: #06b6d4;
+            --primary-color: #4f46e5;
+            --secondary-color: #455f83;
+            --accent-color: #10b981;
         }
         body {
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         .navbar {
-            background: white !important;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        .navbar .nav-link {
-            color: #64748b;
-        }
-        .navbar .nav-link:hover {
-            color: #1e293b;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
         }
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            border: none;
-            padding: 12px 28px;
-            font-weight: 600;
-            transition: all 0.3s;
+            background: var(--primary-color);
+            border-color: var(--primary-color);
         }
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+            background: #4338ca;
+            border-color: #4338ca;
         }
-        .hero-gradient {
-            background: linear-gradient(135deg, #0f0f23 0%, #1e1b4b 50%, #312e81 100%);
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-gradient::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 50%);
-            animation: rotate 20s linear infinite;
-        }
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        .glow-box {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-        }
-        .device-frame {
-            background: #0f0f23;
-            border-radius: 16px;
-            padding: 12px;
-            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.5);
-        }
-        .device-frame-tablet {
-            max-width: 420px;
-            margin: 0 auto;
-            border-radius: 24px;
-            padding: 16px;
-        }
-        .device-frame-phone {
-            max-width: 280px;
-            margin: 0 auto;
-            border-radius: 36px;
-            padding: 12px;
-            border: 3px solid #0f0f23;
-        }
-        .app-screen {
-            background: #1e293b;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-        .app-sidebar {
-            background: #0f172a;
-            height: 100%;
-            padding: 12px;
-        }
-        .app-sidebar-item {
-            color: #94a3b8;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-        }
-        .app-sidebar-item.active {
-            background: rgba(99, 102, 241, 0.2);
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #630fe2 100%);
             color: white;
-        }
-        .app-header {
-            background: #1e293b;
-            padding: 12px 16px;
-            border-bottom: 1px solid #334155;
-        }
-        .product-card-mini {
-            background: white;
-            border-radius: 8px;
-            padding: 8px;
-            text-align: center;
-            color: #333;
-            font-size: 11px;
-        }
-        .cart-mini {
-            background: #1e293b;
-            padding: 10px;
-            border-radius: 8px;
-        }
-        .cart-item-mini {
-            background: #334155;
-            padding: 6px 10px;
-            border-radius: 6px;
-            margin-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            color: white;
-        }
-        .stat-card {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 16px;
-            padding: 24px;
-        }
-        .feature-card {
-            background: white;
-            border-radius: 16px;
-            padding: 28px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            transition: all 0.3s;
-        }
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 100px 0;
         }
         .feature-icon {
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            border-radius: 14px;
+            width: 60px;
+            height: 60px;
+            background: rgba(79, 70, 229, 0.1);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 24px;
-            color: white;
+            color: var(--primary-color);
         }
         .pricing-card {
-            background: white;
-            border-radius: 20px;
-            padding: 32px;
-            border: 2px solid transparent;
-            transition: all 0.3s;
+            border: none;
+            border-radius: 16px;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
         .pricing-card:hover {
-            border-color: var(--primary);
-            transform: scale(1.02);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
         .pricing-card.popular {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, #4c1d95 100%);
+            border: 2px solid var(--primary-color);
+            position: relative;
+        }
+        .pricing-card.popular::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-color);
             color: white;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 12px;
         }
-        .footer-dark {
-            background: white;
-            color: #64748b;
-            border-top: 1px solid #e2e8f0;
+        .footer {
+            background: #1e293b;
+            color: #94a3b8;
+            padding: 60px 0 20px;
         }
-        .footer-dark a:hover {
-            color: #4f46e5;
+        .footer a {
+            color: #94a3b8;
+            text-decoration: none;
         }
-        .float-up {
-            animation: floatUp 3s ease-in-out infinite;
-        }
-        @keyframes floatUp {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
+        .footer a:hover {
+            color: white;
         }
     </style>
     {% block extra_css %}{% endblock %}
@@ -197,26 +88,37 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'website:home' %}">
-                <div class="bg-primary text-white rounded-lg me-2 d-flex align-items-center justify-content-center" style="width:32px;height:32px;">
-                    <i class="bi bi-shop"></i>
-                </div>
-                SaaS POS
+            <a class="navbar-brand fw-bold" href="{% url 'website:home' %}">
+                <i class="bi bi-shop me-2"></i>SaaS POS
             </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center gap-2">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'website:features' %}">Features</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'website:pricing' %}">Pricing</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'website:about' %}">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'website:contact' %}">Contact</a></li>
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'website:features' %}">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'website:pricing' %}">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'website:about' %}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'website:contact' %}">Contact</a>
+                    </li>
                     {% if user.is_authenticated %}
-                    <li class="nav-item"><a class="btn btn-primary" href="{% url 'dashboard:dashboard' %}">Dashboard</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-primary" href="{% url 'dashboard:dashboard' %}">Go to Dashboard</a>
+                    </li>
                     {% else %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'website:login' %}">Login</a></li>
-                    <li class="nav-item"><a class="btn btn-primary" href="{% url 'website:signup' %}">Start Free</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="nav-link" href="{% url 'website:login' %}">Login</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-primary" href="{% url 'website:signup' %}">Start Free Trial</a>
+                    </li>
                     {% endif %}
                 </ul>
             </div>
@@ -226,59 +128,52 @@
     {% block content %}{% endblock %}
 
     <!-- Footer -->
-    <footer class="footer-dark pt-5 pb-3">
+    <footer class="footer">
         <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="bg-primary text-white rounded-lg me-2 d-flex align-items-center justify-content-center" style="width:32px;height:32px;">
-                            <i class="bi bi-shop"></i>
-                        </div>
-                        <h5 class="mb-0" style="color: #1e293b;">SaaS POS</h5>
-                    </div>
-                    <p class="small">Modern point of sale system for businesses of all sizes. Manage your store, inventory, and sales with ease.</p>
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="text-white mb-3">
+                        <i class="bi bi-shop me-2"></i>SaaS POS
+                    </h5>
+                    <p>Modern point of sale system for businesses of all sizes. Manage your store, inventory, and sales with ease.</p>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h6 class="text-white mb-3">Product</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'website:features' %}">Features</a></li>
+                        <li><a href="{% url 'website:pricing' %}">Pricing</a></li>
+                        <li><a href="{% url 'website:faq' %}">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h6 class="text-white mb-3">Company</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'website:about' %}">About</a></li>
+                        <li><a href="{% url 'website:contact' %}">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h6 class="text-white mb-3">Legal</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'website:privacy' %}">Privacy Policy</a></li>
+                        <li><a href="{% url 'website:terms' %}">Terms of Service</a></li>
+                        <li><a href="{% url 'website:cookies' %}">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 mb-4">
+                    <h6 class="text-white mb-3">Connect</h6>
                     <div class="d-flex gap-3">
-                        <a href="#" style="color: #64748b;"><i class="bi bi-facebook fs-5"></i></a>
-                        <a href="#" style="color: #64748b;"><i class="bi bi-twitter fs-5"></i></a>
-                        <a href="#" style="color: #64748b;"><i class="bi bi-instagram fs-5"></i></a>
-                        <a href="#" style="color: #64748b;"><i class="bi bi-linkedin fs-5"></i></a>
+                        <a href="#"><i class="bi bi-facebook fs-5"></i></a>
+                        <a href="#"><i class="bi bi-twitter fs-5"></i></a>
+                        <a href="#"><i class="bi bi-instagram fs-5"></i></a>
+                        <a href="#"><i class="bi bi-linkedin fs-5"></i></a>
                     </div>
-                </div>
-                <div class="col-6 col-lg-2">
-                    <h6 class="mb-3" style="color: #1e293b;">Product</h6>
-                    <ul class="list-unstyled mb-0">
-                        <li class="mb-2"><a href="{% url 'website:features' %}">Features</a></li>
-                        <li class="mb-2"><a href="{% url 'website:pricing' %}">Pricing</a></li>
-                        <li class="mb-2"><a href="{% url 'website:faq' %}">FAQ</a></li>
-                    </ul>
-                </div>
-                <div class="col-6 col-lg-2">
-                    <h6 class="mb-3" style="color: #1e293b;">Company</h6>
-                    <ul class="list-unstyled mb-0">
-                        <li class="mb-2"><a href="{% url 'website:about' %}" style="color: #64748b;">About</a></li>
-                        <li class="mb-2"><a href="{% url 'website:contact' %}" style="color: #64748b;">Contact</a></li>
-                        <li class="mb-2"><a href="#" style="color: #64748b;">Careers</a></li>
-                    </ul>
-                </div>
-                <div class="col-6 col-lg-2">
-                    <h6 class="mb-3" style="color: #1e293b;">Legal</h6>
-                    <ul class="list-unstyled mb-0">
-                        <li class="mb-2"><a href="{% url 'website:privacy' %}" style="color: #64748b;">Privacy</a></li>
-                        <li class="mb-2"><a href="{% url 'website:terms' %}" style="color: #64748b;">Terms</a></li>
-                        <li class="mb-2"><a href="{% url 'website:cookies' %}" style="color: #64748b;">Cookies</a></li>
-                    </ul>
-                </div>
-                <div class="col-6 col-lg-2">
-                    <h6 class="mb-3" style="color: #1e293b;">Support</h6>
-                    <ul class="list-unstyled mb-0">
-                        <li class="mb-2"><a href="#" style="color: #64748b;">Help Center</a></li>
-                        <li class="mb-2"><a href="#" style="color: #64748b;">Contact Us</a></li>
-                        <li class="mb-2"><a href="#" style="color: #64748b;">Status</a></li>
-                    </ul>
                 </div>
             </div>
-            <hr class="my-4" style="border-color: #e2e8f0;">
-            <p class="text-center mb-0" style="color: #64748b;">&copy; 2026 SaaS POS. All rights reserved.</p>
+            <hr style="border-color: #475569;">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2026 SaaS POS. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
