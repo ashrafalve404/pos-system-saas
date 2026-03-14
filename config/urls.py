@@ -14,6 +14,9 @@ urlpatterns = [
     # Public website
     path('', include('website.urls', namespace='website')),
     
+    # API
+    path('api/', include('api.urls', namespace='api')),
+    
     # App (dashboard)
     path('app/', include('dashboard.urls')),
     path('app/products/', include('products.urls', namespace='products')),

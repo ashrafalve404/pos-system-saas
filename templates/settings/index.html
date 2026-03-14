@@ -24,6 +24,124 @@
     
     <div class="col-md-6">
         <div class="card mb-4">
+            <div class="card-header">
+                <h5>Stores</h5>
+            </div>
+            <div class="card-body">
+                {% for store in stores %}
+                <div class="border-bottom py-2">
+                    <strong>{{ store.name }}</strong><br>
+                    <small class="text-muted">{{ store.address|default:"No address" }}</small>
+                </div>
+                {% empty %}
+                <p class="text-muted">No stores yet</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5><i class="bi bi-key"></i> API Keys</h5>
+        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#createApiKeyModal">
+            <i class="bi bi-plus"></i> Generate New Key
+        </button>
+    </div>
+    <div class="card-body">
+        <p class="text-muted">Use API keys to sync products from external systems.</p>
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Key</th>
+                        <th>Created</th>
+                        <th>Last Used</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for api_key in api_keys %}
+                    <tr>
+                        <td>{{ api_key.name }}</td>
+                        <td><code>{{ api_key.key }}</code></td>
+                        <td>{{ api_key.created_at|date:"M d, Y" }}</td>
+                        <td>{{ api_key.last_used|date:"M d, Y"|default:"Never" }}</td>
+                        <td>
+                            {% if api_key.is_active %}
+                            <span class="badge bg-success">Active</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-danger" onclick="revokeApiKey({{ api_key.id }})">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-3">No API keys yet. Generate one to start syncing products.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Create API Key Modal -->
+<div class="modal fade" id="createApiKeyModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Generate API Key</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post" action="{% url 'settings:create_api_key' %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Key Name</label>
+                        <input type="text" name="name" class="form-control" placeholder="e.g., WooCommerce Sync" required>
+                        <small class="text-muted">Give your key a name to identify its purpose</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Generate Key</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function revokeApiKey(id) {
+    if (confirm('Are you sure you want to revoke this API key?')) {
+        fetch('/settings/api-key/revoke/' + id + '/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        }).then(() => window.location.reload());
+    }
+}
+</script>
+            <div class="card-body">
+                <p><strong>Name:</strong> {{ organization.name }}</p>
+                <p><strong>Plan:</strong> {{ organization.get_subscription_plan_display }}</p>
+                <p><strong>Created:</strong> {{ organization.created_at|date:"M d, Y" }}</p>
+                <a href="{% url 'settings:organization_edit' %}" class="btn btn-primary">Edit Organization</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5>Stores</h5>
                 <a href="{% url 'settings:store_create' %}" class="btn btn-sm btn-primary">Add Store</a>

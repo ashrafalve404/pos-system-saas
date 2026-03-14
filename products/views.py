@@ -3,6 +3,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.db.models import Q
+from django.http import JsonResponse
 from .models import Product, Category
 
 
@@ -103,3 +104,30 @@ class CategoryCreateView(LoginRequiredMixin, CreateView):
         form.instance.organization = self.request.user.organization
         messages.success(self.request, 'Category created successfully!')
         return super().form_valid(form)
+
+
+def bulk_delete_products(request):
+    """AJAX view to bulk delete products"""
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Only POST method allowed'}, status=405)
+    
+    try:
+        import json
+        data = json.loads(request.body)
+        product_ids = data.get('product_ids', [])
+    except:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    
+    if not product_ids:
+        return JsonResponse({'error': 'No products selected'}, status=400)
+    
+    # Delete products belonging to user's organization
+    deleted_count = Product.objects.filter(
+        id__in=product_ids,
+        organization=request.user.organization
+    ).delete()[0]
+    
+    return JsonResponse({
+        'success': True,
+        'deleted_count': deleted_count
+    })

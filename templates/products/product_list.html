@@ -5,10 +5,255 @@
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2><i class="bi bi-box"></i> Products</h2>
-    <a href="{% url 'products:product_create' %}" class="btn btn-primary">
-        <i class="bi bi-plus"></i> Add Product
-    </a>
+    <div class="d-flex gap-2">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="selectMode" onchange="toggleSelectMode()">
+            <label class="form-check-label fw-bold text-danger" for="selectMode">Select Mode</label>
+        </div>
+        <button class="btn btn-outline-danger" id="deleteSelectedBtn" onclick="deleteSelectedProducts()" style="display: none;">
+            <i class="bi bi-trash"></i> Delete Selected (<span id="selectedCount">0</span>)
+        </button>
+        <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#importApiModal">
+            <i class="bi bi-cloud-download"></i> Import via API
+        </button>
+        <a href="{% url 'products:product_create' %}" class="btn btn-primary">
+            <i class="bi bi-plus"></i> Add Product
+        </a>
+    </div>
 </div>
+
+<!-- Import API Modal -->
+<div class="modal fade" id="importApiModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Import Products via API</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">External API URL</label>
+                    <input type="url" class="form-control" id="externalApiUrl" placeholder="https://fakestoreapi.com/products">
+                    <small class="text-muted">Enter the URL of the external product API</small>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">External API Key (Optional)</label>
+                    <input type="password" class="form-control" id="externalApiKey" placeholder="API key if required">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Category</label>
+                    <input type="text" class="form-control" id="importCategory" placeholder="Imported" value="Imported">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Your API Key</label>
+                    <input type="password" class="form-control" id="userApiKey" placeholder="Enter your SaaS POS API key" value="e515dc9a228abce4b0779182d23c784b2f14ac6e690af038c17e7412cc5e4c06">
+                    <small class="text-muted">Get this from Settings → API Keys</small>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Or use demo products</label>
+                    <button type="button" class="btn btn-outline-primary w-100" onclick="importDemoProducts()">
+                        <i class="bi bi-gift"></i> Import Demo Products
+                    </button>
+                </div>
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> 
+                    <strong>How it works:</strong> Products will be fetched from the external API and added to your store. Products with matching names will be updated.
+                </div>
+                <div id="importStatus"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="importFromApi()">
+                    <i class="bi bi-cloud-download"></i> Import Products
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function importDemoProducts() {
+    const userApiKey = document.getElementById('userApiKey').value || 'e515dc9a228abce4b0779182d23c784b2f14ac6e690af038c17e7412cc5e4c06';
+    const category = document.getElementById('importCategory').value || 'Demo';
+    const statusDiv = document.getElementById('importStatus');
+    const csrftoken = getCookie('csrftoken');
+    
+    const demoProducts = [
+        { name: "Wireless Mouse", price: 29.99, description: "Ergonomic wireless mouse", stock: 50 },
+        { name: "USB Keyboard", price: 49.99, description: "Mechanical USB keyboard", stock: 30 },
+        { name: "Monitor Stand", price: 39.99, description: "Adjustable monitor stand", stock: 25 },
+        { name: "Webcam HD", price: 79.99, description: "1080p HD Webcam", stock: 20 },
+        { name: "USB Hub", price: 19.99, description: "4-port USB hub", stock: 45 },
+        { name: "Laptop Bag", price: 34.99, description: "Padded laptop bag", stock: 35 },
+        { name: "Phone Charger", price: 24.99, description: "Fast phone charger", stock: 60 },
+        { name: "Screen Protector", price: 9.99, description: "Tempered glass screen protector", stock: 100 },
+        { name: "Phone Case", price: 14.99, description: "Protective phone case", stock: 80 },
+        { name: "Bluetooth Speaker", price: 44.99, description: "Portable Bluetooth speaker", stock: 40 }
+    ];
+    
+    statusDiv.innerHTML = '<div class="alert alert-info"><i class="bi bi-hourglass-split"></i> Importing demo products...</div>';
+    
+    fetch('/api/products/bulk/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken,
+            'X-API-Key': userApiKey
+        },
+        body: JSON.stringify({
+            products: demoProducts.map(p => ({
+                name: p.name,
+                price: p.price,
+                stock_quantity: p.stock,
+                description: p.description,
+                category: category
+            }))
+        })
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            statusDiv.innerHTML = '<div class="alert alert-success"><i class="bi bi-check-circle"></i> Successfully imported ' + result.results.length + ' products!</div>';
+            setTimeout(() => window.location.reload(), 2000);
+        } else {
+            statusDiv.innerHTML = '<div class="alert alert-danger">Error: ' + (result.error || 'Unknown error') + '</div>';
+        }
+    })
+    .catch(error => {
+        statusDiv.innerHTML = '<div class="alert alert-danger">Error: ' + error.message + '</div>';
+    });
+}
+
+function importFromApi() {
+    const url = document.getElementById('externalApiUrl').value;
+    const apiKey = document.getElementById('externalApiKey').value;
+    const category = document.getElementById('importCategory').value || 'Imported';
+    const userApiKey = document.getElementById('userApiKey').value;
+    const statusDiv = document.getElementById('importStatus');
+    const csrftoken = getCookie('csrftoken');
+    
+    if (!url) {
+        statusDiv.innerHTML = '<div class="alert alert-danger">Please enter an API URL</div>';
+        return;
+    }
+    
+    if (!userApiKey) {
+        statusDiv.innerHTML = '<div class="alert alert-danger">Please enter your SaaS POS API key. Get it from Settings → API Keys</div>';
+        return;
+    }
+    
+    statusDiv.innerHTML = '<div class="alert alert-info"><i class="bi bi-hourglass-split"></i> Importing products... This may take a moment.</div>';
+    
+    // Use server-side import endpoint
+    fetch('/api/products/import/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken,
+            'X-API-Key': userApiKey
+        },
+        body: JSON.stringify({
+            url: url,
+            api_key: apiKey,
+            category: category
+        })
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            statusDiv.innerHTML = '<div class="alert alert-success"><i class="bi bi-check-circle"></i> Successfully imported ' + result.results.length + ' products!</div>';
+            setTimeout(() => window.location.reload(), 2000);
+        } else {
+            statusDiv.innerHTML = '<div class="alert alert-danger">Error: ' + (result.error || 'Unknown error') + '</div>';
+        }
+    })
+    .catch(error => {
+        statusDiv.innerHTML = '<div class="alert alert-danger">Error: ' + error.message + '</div>';
+    });
+}
+
+function toggleSelectMode() {
+    const selectMode = document.getElementById('selectMode').checked;
+    const checkboxes = document.querySelectorAll('.product-checkbox');
+    const selectAll = document.getElementById('selectAll');
+    const deleteBtn = document.getElementById('deleteSelectedBtn');
+    
+    checkboxes.forEach(cb => {
+        cb.style.display = selectMode ? 'block' : 'none';
+    });
+    
+    selectAll.style.display = selectMode ? 'block' : 'none';
+    
+    if (!selectMode) {
+        checkboxes.forEach(cb => cb.checked = false);
+        document.getElementById('selectedCount').textContent = '0';
+    }
+    
+    deleteBtn.style.display = selectMode ? 'block' : 'none';
+}
+
+function toggleSelectAll() {
+    const selectAll = document.getElementById('selectAll').checked;
+    const checkboxes = document.querySelectorAll('.product-checkbox');
+    checkboxes.forEach(cb => cb.checked = selectAll);
+    updateSelectedCount();
+}
+
+function updateSelectedCount() {
+    const checkboxes = document.querySelectorAll('.product-checkbox:checked');
+    document.getElementById('selectedCount').textContent = checkboxes.length;
+}
+
+function deleteSelectedProducts() {
+    const checkboxes = document.querySelectorAll('.product-checkbox:checked');
+    const selectedIds = Array.from(checkboxes).map(cb => cb.value);
+    
+    if (selectedIds.length === 0) {
+        alert('Please select at least one product to delete');
+        return;
+    }
+    
+    if (!confirm(`Are you sure you want to delete ${selectedIds.length} product(s)? This action cannot be undone.`)) {
+        return;
+    }
+    
+    fetch('/app/products/bulk-delete/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ product_ids: selectedIds })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(`Successfully deleted ${data.deleted_count} product(s)`);
+            window.location.reload();
+        } else {
+            alert('Error: ' + (data.error || 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        alert('Error: ' + error.message);
+    });
+}
+</script>
 
 <div class="card">
     <div class="card-body">
@@ -35,6 +280,9 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
+                        <th style="width: 40px;">
+                            <input type="checkbox" class="form-check-input" id="selectAll" onchange="toggleSelectAll()" style="display: none;">
+                        </th>
                         <th>Name</th>
                         <th>Category</th>
                         <th>Barcode</th>
@@ -48,6 +296,9 @@
                 <tbody>
                     {% for product in products %}
                     <tr>
+                        <td>
+                            <input type="checkbox" class="form-check-input product-checkbox" value="{{ product.id }}" onchange="updateSelectedCount()" style="display: none;">
+                        </td>
                         <td>{{ product.name }}</td>
                         <td>{{ product.category.name|default:"-" }}</td>
                         <td>{{ product.barcode|default:"-" }}</td>
@@ -78,7 +329,7 @@
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="8" class="text-center text-muted py-4">No products found</td>
+                        <td colspan="9" class="text-center text-muted py-4">No products found</td>
                     </tr>
                     {% endfor %}
                 </tbody>

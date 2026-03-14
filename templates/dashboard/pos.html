@@ -4,6 +4,16 @@
 
 {% block extra_css %}
 <style>
+    .product-item {
+        position: relative;
+    }
+    .product-item.select-mode {
+        cursor: default;
+    }
+    .product-item.select-mode:hover {
+        background: #fef3c7;
+        border-color: #f59e0b;
+    }
     .pos-container {
         display: flex;
         height: calc(100vh - 100px);
@@ -100,15 +110,24 @@
             <option value="{{ store.id }}" {% if forloop.first %}selected{% endif %}>{{ store.name }}</option>
             {% endfor %}
         </select>
+        <button class="btn btn-outline-danger btn-sm" onclick="deleteSelectedProducts()" id="deleteSelectedBtn" style="display: none;">
+            <i class="bi bi-trash"></i> Delete Selected (<span id="selectedCount">0</span>)
+        </button>
     </div>
 </div>
 
 <div class="pos-container">
     <div class="product-list card">
         <div class="card-body">
-            <div class="search-box mb-3">
-                <i class="bi bi-search"></i>
-                <input type="text" class="form-control" id="productSearch" placeholder="Search products by name, barcode, or SKU...">
+            <div class="d-flex gap-2 mb-3 align-items-center">
+                <div class="search-box flex-grow-1">
+                    <i class="bi bi-search"></i>
+                    <input type="text" class="form-control" id="productSearch" placeholder="Search products by name, barcode, or SKU...">
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="selectMode" onchange="toggleSelectMode()">
+                    <label class="form-check-label fw-bold text-danger" for="selectMode">Select Mode</label>
+                </div>
             </div>
             <div class="product-grid" id="productGrid">
                 {% for product in products %}
@@ -117,7 +136,10 @@
                      data-name="{{ product.name }}"
                      data-price="{{ product.price }}"
                      data-stock="{{ product.stock_quantity }}"
-                     onclick="addToCart({{ product.id }}, '{{ product.name }}', {{ product.price }}, {{ product.stock_quantity }})">
+                     onclick="handleProductClick(this, {{ product.id }}, '{{ product.name|escapejs }}', {{ product.price }}, {{ product.stock_quantity }})">
+                    <div class="form-check form-check-inline position-absolute top-0 start-0 m-1" style="display: none;" onclick="event.stopPropagation();">
+                        <input type="checkbox" class="form-check-input product-checkbox" value="{{ product.id }}" onchange="updateSelectedCount()">
+                    </div>
                     <div class="fw-bold">{{ product.name }}</div>
                     <div class="text-primary">${{ product.price|floatformat:2 }}</div>
                     <small class="text-muted">Stock: {{ product.stock_quantity }}</small>
@@ -224,6 +246,16 @@ function getCookie(name) {
 const csrftoken = getCookie('csrftoken');
 
 let cart = [];
+
+function handleProductClick(element, id, name, price, stock) {
+    if (document.getElementById('selectMode').checked) {
+        const checkbox = element.querySelector('.product-checkbox');
+        checkbox.checked = !checkbox.checked;
+        updateSelectedCount();
+    } else {
+        addToCart(id, name, price, stock);
+    }
+}
 
 function addToCart(id, name, price, stock) {
     if (stock <= 0) return;
@@ -384,5 +416,71 @@ document.getElementById('productSearch').addEventListener('input', function(e) {
         }
     });
 });
+
+function toggleSelectMode() {
+    const selectMode = document.getElementById('selectMode').checked;
+    const checkboxes = document.querySelectorAll('.product-checkbox');
+    const deleteBtn = document.getElementById('deleteSelectedBtn');
+    const productItems = document.querySelectorAll('.product-item');
+    
+    productItems.forEach(item => {
+        if (selectMode) {
+            item.classList.add('select-mode');
+        } else {
+            item.classList.remove('select-mode');
+        }
+    });
+    
+    checkboxes.forEach(cb => {
+        cb.parentElement.style.display = selectMode ? 'block' : 'none';
+    });
+    
+    if (!selectMode) {
+        checkboxes.forEach(cb => cb.checked = false);
+        document.getElementById('selectedCount').textContent = '0';
+    }
+    
+    deleteBtn.style.display = selectMode ? 'block' : 'none';
+}
+
+function updateSelectedCount() {
+    const checkboxes = document.querySelectorAll('.product-checkbox:checked');
+    document.getElementById('selectedCount').textContent = checkboxes.length;
+}
+
+function deleteSelectedProducts() {
+    const checkboxes = document.querySelectorAll('.product-checkbox:checked');
+    const selectedIds = Array.from(checkboxes).map(cb => cb.value);
+    
+    if (selectedIds.length === 0) {
+        alert('Please select at least one product to delete');
+        return;
+    }
+    
+    if (!confirm(`Are you sure you want to delete ${selectedIds.length} product(s)? This action cannot be undone.`)) {
+        return;
+    }
+    
+    fetch('/app/products/bulk-delete/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify({ product_ids: selectedIds })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(`Successfully deleted ${data.deleted_count} product(s)`);
+            window.location.reload();
+        } else {
+            alert('Error: ' + (data.error || 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        alert('Error: ' + error.message);
+    });
+}
 </script>
 {% endblock %}
